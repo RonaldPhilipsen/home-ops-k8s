@@ -7,11 +7,7 @@
     "ansible.validation.lint.enabled": true,
     "ansible.validation.lint.path": ".venv/bin/ansible-lint",
     "files.associations": {
-        "*.json5": "jsonc",
-        "./ansible/**/*.yaml": "ansible",
-        "./ansible/**/*.sops.yaml": "yaml",
-        "./ansible/**/inventory/**/*.yaml": "yaml",
-        "./kubernetes/**/*.sops.toml": "plaintext"
+        "*.yaml": "yaml"
     },
     "sops.defaults.ageKeyFile": "age.key",
     "yaml.schemas": {

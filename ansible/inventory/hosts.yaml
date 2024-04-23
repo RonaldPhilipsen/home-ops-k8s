@@ -1,0 +1,8 @@
+---
+kubernetes:
+  children:
+    controllers:
+      hosts:
+        "cm3588":
+          ansible_user: "k3s"
+          ansible_host: "192.168.0.7"

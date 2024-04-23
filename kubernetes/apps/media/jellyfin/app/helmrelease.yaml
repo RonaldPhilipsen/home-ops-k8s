@@ -1,0 +1,149 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.rafaribe.com/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.0.4
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      enableServiceLinks: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "Always"
+        supplementalGroups: [44, 105, 104, 109, 10000, 568]
+        seccompProfile: { type: "RuntimeDefault" }
+      nodeSelector:
+        kubernetes.io/hostname: "cm3588"
+      hostNetwork: false
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: jellyfin/jellyfin
+              tag: "unstable"
+              pullPolicy: Always
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8096
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8096
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 30
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8096
+
+    ingress:
+      main:
+        enabled: true
+        className: nginx-external
+        annotations:
+          hajimari.io/icon: simple-icons:jellyfin
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+          - host: jellyfin.rphilipsen.nl
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: jellyfin
+      media:
+        type: nfs
+        server: cm3588.rphilipsen.nl
+        path: Media
+        mountPath: /media
+        readOnly: false
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - subPath: "tmp"
+            path: "/tmp"
+          - subPath: "transcode"
+            path: "/transcode"
+
+      # This stuff is necessary for the rockchip GPU to work
+      dri:
+        type: hostPath
+        hostPath: /dev/dri
+        hostPathType: Directory
+        globalMounts:
+          - path: /dev/dri
+      dma_heap:
+        type: hostPath
+        hostPath: /dev/dma_heap
+        hostPathType: Directory
+        globalMounts:
+          - path: /dev/dma_heap
+      mali0:
+        type: hostPath
+        hostPath: /dev/mali0
+        hostPathType: Directory
+        globalMounts:
+          - path: /dev/mali0
+      rga:
+        type: hostPath
+        hostPath: /dev/rga
+        hostPathType: Directory
+        globalMounts:
+          - path: /dev/rga
+      mpp_service:
+        type: hostPath
+        hostPath: /dev/mpp_service
+        hostPathType: Directory
+        globalMounts:
+          - path: /dev/mpp_service
+     
