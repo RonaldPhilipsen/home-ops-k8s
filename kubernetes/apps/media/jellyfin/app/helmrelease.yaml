@@ -79,7 +79,10 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 30
-
+            securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
     service:
       app:
         controller: jellyfin
@@ -124,21 +127,16 @@ spec:
             path: "/transcode"
 
       # This stuff is necessary for the rockchip GPU to work
-      # Directories
       dri:
         type: hostPath
         hostPath: /dev/dri
-        hostPathType: Directory
         globalMounts:
           - path: /dev/dri
       dma-heap:
         type: hostPath
         hostPath: /dev/dma_heap
-        hostPathType: Directory
         globalMounts:
           - path: /dev/dma_heap
-
-      # Devices
       mali0:
         type: hostPath
         hostPath: /dev/mali0
