@@ -101,9 +101,11 @@ spec:
         type: persistentVolumeClaim
         existingClaim: jellyfin
       media:
-        type: nfs
-        server: cm3588.rphilipsen.nl
-        path: /Media
+        type: hostPath
+        hostPath: /mnt/storage/Media
+        hostPathType: Directory
+        globalMounts:
+          - path: /media
       tmp:
         enabled: true
         type: emptyDir
