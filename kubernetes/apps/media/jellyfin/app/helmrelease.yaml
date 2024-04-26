@@ -82,7 +82,7 @@ spec:
     ingress:
       app:
         enabled: true
-        className: nginx-external
+        className: ingress-nginx-external
         annotations:
           hajimari.io/icon: simple-icons:jellyfin
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
