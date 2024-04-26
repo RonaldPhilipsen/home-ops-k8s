@@ -103,7 +103,7 @@ spec:
       media:
         type: nfs
         server: cm3588.rphilipsen.nl
-        path: Media
+        path: /Media
       tmp:
         enabled: true
         type: emptyDir
