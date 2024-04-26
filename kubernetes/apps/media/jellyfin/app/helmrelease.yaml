@@ -36,7 +36,7 @@ spec:
         supplementalGroups: [44, 105, 104, 109, 10000, 568]
         seccompProfile: { type: "RuntimeDefault" }
       nodeSelector:
-        kubernetes.io/hostname: "cm3588"
+        kubernetes.io/arch: arm64
       hostNetwork: false
     controllers:
       main:
