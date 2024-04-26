@@ -1,20 +1,30 @@
----
+--- 
+kind: PersistentVolume
 apiVersion: v1
-kind: PersistentVolumeClaim
 metadata:
   name: jellyfin
+  namespace: media
 spec:
-  resources:
-    requests:
-      storage: 15Gi
   capacity:
     storage: 15Gi
   accessModes:
-    - ReadWriteMany
-  storageClassName: 
+  - ReadWriteOnce
   mountOptions:
-    - nfsvers=4.1
+  - nfsvers=4.1
   nfs:
     path: /config/jellyfin
     server: 192.168.0.7
-  persistentVolumeReclaimPolicy: Retain
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 15Gi
