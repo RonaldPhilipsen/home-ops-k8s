@@ -5,7 +5,7 @@ metadata:
   name: apps-jellyfin
   namespace: flux-system
 spec:
-  path: ./kubernetes/media/jellyfin/app
+  path: ./kubernetes/apps/media/jellyfin/app
   prune: true
   sourceRef:
     kind: GitRepository
