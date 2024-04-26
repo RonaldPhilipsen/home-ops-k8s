@@ -84,6 +84,8 @@ spec:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
                 capabilities: { drop: ["ALL"] }
+                hostPID: true
+                hostIPC: true
     service:
       app:
         controller: jellyfin
