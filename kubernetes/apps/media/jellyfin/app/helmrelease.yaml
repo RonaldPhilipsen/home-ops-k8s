@@ -97,9 +97,11 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        existingClaim: jellyfin
+        type: hostPath
+        hostPath: /mnt/storage/config/jellyfin
+        hostPathType: Directory
+        globalMounts:
+          - path: /config
       media:
         type: hostPath
         hostPath: /mnt/storage/Media
