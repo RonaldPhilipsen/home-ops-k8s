@@ -121,7 +121,7 @@ spec:
         hostPathType: Directory
         globalMounts:
           - path: /dev/dri
-      dma_heap:
+      dma-heap:
         type: hostPath
         hostPath: /dev/dma_heap
         hostPathType: Directory
@@ -139,7 +139,7 @@ spec:
         hostPathType: Directory
         globalMounts:
           - path: /dev/rga
-      mpp_service:
+      mpp-service:
         type: hostPath
         hostPath: /dev/mpp_service
         hostPathType: Directory
