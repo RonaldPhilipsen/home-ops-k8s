@@ -49,30 +49,35 @@ spec:
               repository: jellyfin/jellyfin
               tag: "unstable"
               pullPolicy: Always
-            # probes:
-            #   liveness: &probe
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /health
-            #         port: &port 8096
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probe
-            #   startup:
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /health
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 30
+            env:
+              DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+              JELLYFIN_FFmpeg__probesize: 50000000
+              JELLYFIN_FFmpeg__analyzeduration: 50000000
+              JELLYFIN_PublishedServerUrl: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8096
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 30
 
     service:
       app:
@@ -93,22 +98,6 @@ spec:
                 service:
                   identifier: app
                   port: http
-
-    # ingress:
-    #   app:
-    #     className: external
-    #     annotations:
-    #       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    #     hosts:
-    #       - host: &host "{{ .Release.Name }}.${EXTERNAL_DOMAIN}"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               name: app
-    #               port: http
-    #     tls:
-    #       - hosts:
-    #           - *host
 
     persistence:
       config:
@@ -134,6 +123,7 @@ spec:
             path: "/transcode"
 
       # This stuff is necessary for the rockchip GPU to work
+      # Directories
       dri:
         type: hostPath
         hostPath: /dev/dri
@@ -146,22 +136,21 @@ spec:
         hostPathType: Directory
         globalMounts:
           - path: /dev/dma_heap
+
+      # Devices
       mali0:
         type: hostPath
         hostPath: /dev/mali0
-        hostPathType: Directory
         globalMounts:
           - path: /dev/mali0
       rga:
         type: hostPath
         hostPath: /dev/rga
-        hostPathType: Directory
         globalMounts:
           - path: /dev/rga
       mpp-service:
         type: hostPath
         hostPath: /dev/mpp_service
-        hostPathType: Directory
         globalMounts:
           - path: /dev/mpp_service
      
