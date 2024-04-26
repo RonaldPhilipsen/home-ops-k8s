@@ -81,8 +81,7 @@ spec:
 
     ingress:
       app:
-        enabled: true
-        className: ingress-nginx-external
+        className: external
         annotations:
           hajimari.io/icon: simple-icons:jellyfin
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -90,10 +89,9 @@ spec:
           - host: jellyfin.rphilipsen.nl
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  name: main
-                  port: *port
+                  identifier: main
+                  port: http
 
     persistence:
       config:
