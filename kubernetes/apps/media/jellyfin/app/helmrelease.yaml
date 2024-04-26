@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.rafaribe.com/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -27,6 +27,7 @@ spec:
       retries: 0
   uninstall:
     keepHistory: false
+
   values:
     defaultPodOptions:
       enableServiceLinks: false
@@ -49,7 +50,6 @@ spec:
               repository: jellyfin/jellyfin
               tag: "unstable"
               pullPolicy: Always
-            privileged: true
             env:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
