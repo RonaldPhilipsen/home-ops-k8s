@@ -54,7 +54,7 @@ spec:
                   spec:
                     httpGet:
                       path: /health
-                      port: 8096
+                      port: &port 80
                     initialDelaySeconds: 0
                     periodSeconds: 10
                     timeoutSeconds: 1
@@ -66,21 +66,21 @@ spec:
                   spec:
                     httpGet:
                       path: /health
-                      port: 8096
+                      port: *port
                     initialDelaySeconds: 0
                     periodSeconds: 10
                     timeoutSeconds: 1
                     failureThreshold: 30
 
     service:
-      main:
+      app:
         controller: jellyfin
         ports:
           http:
-            port: 8096
+            port: *port
 
     ingress:
-      main:
+      app:
         enabled: true
         className: nginx-external
         annotations:
@@ -93,7 +93,7 @@ spec:
                 pathType: Prefix
                 service:
                   name: main
-                  port: 8096
+                  port: *port
 
     persistence:
       config:
