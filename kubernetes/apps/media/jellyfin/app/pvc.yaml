@@ -5,7 +5,8 @@ metadata:
   name: jellyfin
 spec:
   resources:
-    storage: 15Gi
+    requests:
+      storage: 15Gi
   capacity:
     storage: 15Gi
   accessModes:
