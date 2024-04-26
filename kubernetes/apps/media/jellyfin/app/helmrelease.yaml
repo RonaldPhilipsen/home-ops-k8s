@@ -39,38 +39,38 @@ spec:
         kubernetes.io/arch: arm64
       hostNetwork: false
     controllers:
-      main:
-        strategy: Recreate
-        containers:
-          main:
-            image:
-              repository: jellyfin/jellyfin
-              tag: "unstable"
-              pullPolicy: Always
-            probes:
-              liveness: &probe
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 8096
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probe
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 8096
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 30
+      - main:
+          strategy: Recreate
+          containers:
+            main:
+              image:
+                repository: jellyfin/jellyfin
+                tag: "unstable"
+                pullPolicy: Always
+              probes:
+                liveness: &probe
+                  enabled: true
+                  custom: true
+                  spec:
+                    httpGet:
+                      path: /health
+                      port: 8096
+                    initialDelaySeconds: 0
+                    periodSeconds: 10
+                    timeoutSeconds: 1
+                    failureThreshold: 3
+                readiness: *probe
+                startup:
+                  enabled: true
+                  custom: true
+                  spec:
+                    httpGet:
+                      path: /health
+                      port: 8096
+                    initialDelaySeconds: 0
+                    periodSeconds: 10
+                    timeoutSeconds: 1
+                    failureThreshold: 30
 
     service:
       main:
