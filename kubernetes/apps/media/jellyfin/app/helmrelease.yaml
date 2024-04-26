@@ -81,7 +81,7 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 30
             securityContext:
-                allowPrivilegeEscalation: false
+                allowPrivilegeEscalation: true
                 readOnlyRootFilesystem: true
                 capabilities: { drop: ["ALL"] }
                 hostPID: true
