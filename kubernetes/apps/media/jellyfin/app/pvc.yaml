@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin
+spec:
+  capacity:
+    storage: 15Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: 
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /config/jellyfin
+    server: 192.168.0.7
