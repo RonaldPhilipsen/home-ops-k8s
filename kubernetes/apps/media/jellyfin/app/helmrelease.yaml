@@ -92,7 +92,7 @@ spec:
                 pathType: Prefix
                 service:
                   name: main
-                  port: http
+                  port: 8096
 
     persistence:
       config:
@@ -103,8 +103,6 @@ spec:
         type: nfs
         server: cm3588.rphilipsen.nl
         path: Media
-        mountPath: /media
-        readOnly: false
       tmp:
         enabled: true
         type: emptyDir
