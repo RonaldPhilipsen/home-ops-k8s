@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: &app jellyfin
   namespace: media
 spec:
   interval: 15m
@@ -17,12 +17,14 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
+    #disableWait: true # disable health check
     remediation:
-      retries: 3
+      retries: 0
   upgrade:
     cleanupOnFail: true
+    #disableWait: true # disable health check
     remediation:
-      retries: 3
+      retries: 0
   uninstall:
     keepHistory: false
   values:
@@ -47,51 +49,66 @@ spec:
               repository: jellyfin/jellyfin
               tag: "unstable"
               pullPolicy: Always
-            probes:
-              liveness: &probe
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &port 8096
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probe
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 30
+            # probes:
+            #   liveness: &probe
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /health
+            #         port: &port 8096
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probe
+            #   startup:
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /health
+            #         port: *port
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 30
 
     service:
       app:
         controller: jellyfin
         ports:
           http:
-            port: *port
+            port: 8096
 
     ingress:
       app:
         className: external
         annotations:
-          hajimari.io/icon: simple-icons:jellyfin
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         hosts:
-          - host: jellyfin.rphilipsen.nl
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
+
+    # ingress:
+    #   app:
+    #     className: external
+    #     annotations:
+    #       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    #     hosts:
+    #       - host: &host "{{ .Release.Name }}.${EXTERNAL_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               name: app
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - *host
 
     persistence:
       config:
