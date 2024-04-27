@@ -9,6 +9,7 @@ spec:
   interval: 15m
   chart:
     spec:
+      # renovate: registryUrl=https://bjw-s.github.io/helm-charts
       chart: app-template
       version: 3.0.4
       sourceRef:
@@ -16,19 +17,21 @@ spec:
         name: bjw-s
         namespace: flux-system
   maxHistory: 2
+
   install:
-    #disableWait: true # disable health check
     remediation:
       retries: 0
+
   upgrade:
     cleanupOnFail: true
-    #disableWait: true # disable health check
     remediation:
       retries: 0
+
   uninstall:
     keepHistory: false
 
   values:
+
     defaultPodOptions:
       enableServiceLinks: false
       securityContext:
@@ -42,6 +45,7 @@ spec:
       nodeSelector:
         kubernetes.io/arch: arm64
       hostNetwork: false
+
     controllers:
       jellyfin:
         strategy: Recreate
@@ -51,11 +55,20 @@ spec:
               repository: jellyfin/jellyfin
               tag: "unstable"
               pullPolicy: Always
+
             env:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
               JELLYFIN_PublishedServerUrl: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+
+            securityContext:
+                allowPrivilegeEscalation: true
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+                hostPID: true
+                hostIPC: true
+
             probes:
               liveness: &probe
                 enabled: true
@@ -68,6 +81,7 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
+
               readiness: *probe
               startup:
                 enabled: true
@@ -80,12 +94,7 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 30
-            securityContext:
-                allowPrivilegeEscalation: true
-                readOnlyRootFilesystem: true
-                capabilities: { drop: ["ALL"] }
-                hostPID: true
-                hostIPC: true
+
     service:
       app:
         controller: jellyfin
@@ -113,12 +122,14 @@ spec:
         hostPathType: Directory
         globalMounts:
           - path: /config
+
       media:
         type: hostPath
         hostPath: /mnt/storage/Media
         hostPathType: Directory
         globalMounts:
           - path: /media
+
       tmp:
         enabled: true
         type: emptyDir
@@ -135,21 +146,25 @@ spec:
         hostPath: /dev/dri
         globalMounts:
           - path: /dev/dri
+
       dma-heap:
         type: hostPath
         hostPath: /dev/dma_heap
         globalMounts:
           - path: /dev/dma_heap
+
       mali0:
         type: hostPath
         hostPath: /dev/mali0
         globalMounts:
           - path: /dev/mali0
+
       rga:
         type: hostPath
         hostPath: /dev/rga
         globalMounts:
           - path: /dev/rga
+
       mpp-service:
         type: hostPath
         hostPath: /dev/mpp_service
