@@ -11,3 +11,4 @@ resources:
   - ./metrics-server.yaml
   - ./openebs.yaml
   - ./stakater.yaml
+  - ./angelnu-helm-charts.yaml
