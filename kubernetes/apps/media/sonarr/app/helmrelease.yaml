@@ -56,8 +56,8 @@ spec:
                   - NET_RAW
 
     service:
-      main:
-        controller: main
+      app:
+        controller: sonarr
         ports:
           http:
             port: *port
