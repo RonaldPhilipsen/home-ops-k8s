@@ -17,7 +17,7 @@ spec:
   values:
     instances:
     - name: home-assistant
-      externalName: 192.168.0.2
+      ip: 192.168.0.2
       port: 443
       ingress:
         annotations:
