@@ -1,0 +1,101 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app radarr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      # renovate: registryUrl=https://bjw-s.github.io/helm-charts
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  
+  maxHistory: 3
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
+  values:
+    controllers:
+      radarr:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/radarr-develop
+              tag: 5.5.0.8730@sha256:9ca40af1db9d5ed91cd69f7f2ab602ae937c15ee8c792c5226244019fec4862c
+
+            env:
+              TZ: ${TIMEZONE}
+              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__PORT: &port 80
+              SONARR__LOG_LEVEL: info
+
+            securityContext:
+              privileged: true
+              capabilities:
+                add:
+                  - NET_ADMIN
+                  - NET_RAW
+
+    service:
+      app:
+        controller: radarr
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      app:
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        type: hostPath
+        hostPath: /mnt/storage/config/radarr
+        hostPathType: Directory
+        globalMounts:
+          - path: /config
+
+      media:
+        type: hostPath
+        hostPath: /mnt/storage/Media
+        hostPathType: Directory
+        globalMounts:
+          - path: /media
+
+      downloads:
+        type: hostPath
+        hostPath: /mnt/storage/Downloads
+        hostPathType: Directory
+        globalMounts:
+          - path: /downloads
