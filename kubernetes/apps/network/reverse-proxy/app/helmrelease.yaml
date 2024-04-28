@@ -17,7 +17,7 @@ spec:
   values:
     instances:
     - name: home-assistant
-      externalName: ha.rphilipsen.nl
+      externalName: 192.168.0.2
       port: 443
       ingress:
         annotations:
@@ -28,4 +28,4 @@ spec:
           hajimari.io/group: network
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
-        - host: 192.168.0.2
+        - host: ha.rphilipsen.nl
