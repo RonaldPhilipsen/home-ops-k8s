@@ -10,7 +10,7 @@ metadata:
 
 
 spec:
-  ingressClassName: "internal-nginx"
+  ingressClassName: "external"
   tls:
     - hosts:
         - "ha.${EXTERNAL_DOMAIN}"
