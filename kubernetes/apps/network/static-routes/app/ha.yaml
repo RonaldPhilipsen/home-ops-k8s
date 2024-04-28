@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: home-assistant
+  name: home-assistant-ingress
   namespace: network
   annotations:
     hajimari.io/icon: mdi:home-assistant
@@ -13,20 +13,15 @@ metadata:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
 spec:
-  ingressClassName: "external"
-  tls:
-    - hosts:
-        - "ha.${EXTERNAL_DOMAIN}"
-
   rules:
-    - host: ha.${EXTERNAL_DOMAIN}
+    - host:  &host ha.${EXTERNAL_DOMAIN}
       http:
         paths:
           - path: /
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: home-assistant
+                name: home-assistant-service
                 port:
                   number: 80
   tls:
@@ -37,7 +32,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: &app home-assistant
+  name: &app home-assistant-service
   namespace: networking
     labels:
     app.kubernetes.io/name: *app
@@ -49,12 +44,12 @@ spec:
       port: &port 80
       protocol: TCP
       targetPort: *port
+
 ---
-# ref: https://kristhecodingunicorn.com/post/k8s_proxy_svc/#proxy-to-external-services-with-service-without-selectors
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: &app hass
+  name: &app home-assistant-service
   namespace: networking
   labels:
     app.kubernetes.io/name: *app
