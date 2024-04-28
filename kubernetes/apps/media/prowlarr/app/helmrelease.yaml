@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app radarr
+  name: &app prowlarr
   namespace: media
 spec:
   interval: 30m
@@ -34,30 +34,57 @@ spec:
 
   values:
     controllers:
-      radarr:
+      prowlarr:
         strategy: Recreate
         containers:
-          main:
+          app:
             image:
-              repository: ghcr.io/onedr0p/radarr-develop
-              tag: 5.5.0.8730@sha256:9ca40af1db9d5ed91cd69f7f2ab602ae937c15ee8c792c5226244019fec4862c
+              repository: ghcr.io/onedr0p/prowlarr-develop
+              tag: 1.16.2.4435@sha256:e82f806cd03fea6470430290892f0f906f7d5981b81456a2a717028a250bc183
 
             env:
               TZ: ${TIMEZONE}
-              RADARR__INSTANCE_NAME: Radarr
-              RADARR__PORT: &port 80
-              RADARR__LOG_LEVEL: info
+              PROWLARR__INSTANCE_NAME: Prowlarr
+              PROWLARR__PORT: &port 80
+              PROWLARR__LOG_LEVEL: info
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
 
             securityContext:
-              privileged: true
-              capabilities:
-                add:
-                  - NET_ADMIN
-                  - NET_RAW
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
-        controller: radarr
+        controller: prowlarr
         ports:
           http:
             port: *port
@@ -81,21 +108,7 @@ spec:
     persistence:
       config:
         type: hostPath
-        hostPath: /mnt/storage/config/radarr
+        hostPath: /mnt/storage/config/prowlarr
         hostPathType: Directory
         globalMounts:
           - path: /config
-
-      media:
-        type: hostPath
-        hostPath: /mnt/storage/Media
-        hostPathType: Directory
-        globalMounts:
-          - path: /media
-
-      downloads:
-        type: hostPath
-        hostPath: /mnt/storage/Downloads
-        hostPathType: Directory
-        globalMounts:
-          - path: /downloads
