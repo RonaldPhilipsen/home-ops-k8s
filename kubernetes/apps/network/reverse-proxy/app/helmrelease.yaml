@@ -16,7 +16,7 @@ spec:
 
   values:
     instances:
-    - name: home assistant
+    - name: home-assistant
       externalName: ha.rphilipsen.nl
       port: 443
       ingress:
