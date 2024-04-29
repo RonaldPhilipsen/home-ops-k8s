@@ -15,9 +15,11 @@ spec:
         name: ingress-nginx
         namespace: flux-system
   install:
+    disableWait: true # TODO: remove debug
     remediation:
       retries: 3
   upgrade:
+    disableWait: true # TODO: remove debug
     cleanupOnFail: true
     remediation:
       retries: 3
