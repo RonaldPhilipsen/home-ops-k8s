@@ -7,6 +7,5 @@ resources:
   - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
   - ./prowlarr/ks.yaml
-
-
+  - ./qbittorrent/ks.yaml
 
