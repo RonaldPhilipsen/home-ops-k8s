@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &app radarr
-  namespace: media
+  namespace: default
 spec:
   interval: 30m
   chart:
@@ -87,15 +87,9 @@ spec:
           - path: /config
 
       media:
-        type: hostPath
-        hostPath: /mnt/storage/Media
-        hostPathType: Directory
+        type: nfs
+        server: 192.168.0.7
+        path: Media
         globalMounts:
-          - path: /media
+          - path: /media/
 
-      downloads:
-        type: hostPath
-        hostPath: /mnt/storage/Downloads
-        hostPathType: Directory
-        globalMounts:
-          - path: /downloads

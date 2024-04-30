@@ -3,8 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app sonarr
-  namespace: media
+  name: &app prowlarr
+  namespace: default
 spec:
   interval: 30m
   chart:
@@ -34,30 +34,57 @@ spec:
 
   values:
     controllers:
-      sonarr:
+      prowlarr:
         strategy: Recreate
         containers:
-          main:
+          app:
             image:
-              repository: ghcr.io/onedr0p/sonarr-develop
-              tag: 4.0.4.1572@sha256:d81502f65a47f88525c90a9eb933e5f92bb608b1910f0c63aeff5c723340be97
+              repository: ghcr.io/onedr0p/prowlarr-develop
+              tag: 1.17.0.4448@sha256:66e786d023cf94a7005b9a9effde9e7e4557e799b3f00cfb7b084f81ba15082c
 
             env:
               TZ: ${TIMEZONE}
-              SONARR__INSTANCE_NAME: Sonarr
-              SONARR__PORT: &port 80
-              SONARR__LOG_LEVEL: info
+              PROWLARR__INSTANCE_NAME: Prowlarr
+              PROWLARR__PORT: &port 80
+              PROWLARR__LOG_LEVEL: info
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
 
             securityContext:
-              privileged: true
-              capabilities:
-                add:
-                  - NET_ADMIN
-                  - NET_RAW
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
-        controller: sonarr
+        controller: prowlarr
         ports:
           http:
             port: *port
@@ -81,21 +108,7 @@ spec:
     persistence:
       config:
         type: hostPath
-        hostPath: /mnt/storage/config/sonarr
+        hostPath: /mnt/storage/config/prowlarr
         hostPathType: Directory
         globalMounts:
           - path: /config
-
-      media:
-        type: hostPath
-        hostPath: /mnt/storage/Media
-        hostPathType: Directory
-        globalMounts:
-          - path: /media
-
-      downloads:
-        type: hostPath
-        hostPath: /mnt/storage/Downloads
-        hostPathType: Directory
-        globalMounts:
-          - path: /downloads

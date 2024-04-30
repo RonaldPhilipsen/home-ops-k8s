@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &app jellyfin
-  namespace: media
+  namespace: default
 spec:
   interval: 15m
   chart:
@@ -119,11 +119,11 @@ spec:
           - path: /config
 
       media:
-        type: hostPath
-        hostPath: /mnt/storage/Media
-        hostPathType: Directory
+        type: nfs
+        server: 192.168.0.7
+        path: Media
         globalMounts:
-          - path: /media
+          - path: /media/
 
       tmp:
         enabled: true
