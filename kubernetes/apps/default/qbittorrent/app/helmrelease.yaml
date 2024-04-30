@@ -23,6 +23,15 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [1000]
+        seccompProfile: { type: RuntimeDefault }
     controllers:
       qbittorrent:
         annotations:
@@ -70,15 +79,6 @@ spec:
                 cpu: 100m
               limits:
                 memory: 12Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [1000]
-        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: qbittorrent
