@@ -27,8 +27,8 @@ spec:
       replicaCount: 1
       service:
         annotations:
-          lbipam.cilium.io/sharing-key: "internal"
-          io.cilium/lb-ipam-ips: "192.168.0.8"
+          lbipam.cilium.io/sharing-key: "hostip"
+          io.cilium/lb-ipam-ips: "192.168.0.7"
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal
