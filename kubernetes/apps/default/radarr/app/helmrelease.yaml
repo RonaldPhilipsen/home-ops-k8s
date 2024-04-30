@@ -54,7 +54,15 @@ spec:
                 add:
                   - NET_ADMIN
                   - NET_RAW
-
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [1000]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: radarr
