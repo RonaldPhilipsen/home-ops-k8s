@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: "external"
   rules:
-    - host: &host "ha.${EXTERNAL_DOMAIN}"
+    - host: &host "ha.${SECRET_DOMAIN}"
       http:
         paths:
           - path: /
