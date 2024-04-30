@@ -9,10 +9,10 @@ metadata:
     app.kubernetes.io/instance: *app
 spec:
   ports:
-    - port: 80
+    - port: 443
       protocol: TCP
-      targetPort: 80
-      name: http
+      targetPort: 443
+      name: https
 
 ---
 apiVersion: v1
@@ -24,4 +24,4 @@ subsets:
 - addresses:
   - ip: 192.168.0.2
   ports:
-  - port: 80
+  - port: 443
