@@ -10,7 +10,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
     nginx.ingress.kubernetes.io/websocket-services: home-assistant
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   ingressClassName: "external"
   rules:
@@ -23,7 +23,7 @@ spec:
               service:
                 name: *app
                 port:
-                  name: http
+                  name: https
   tls:
     - hosts:
         - *host
