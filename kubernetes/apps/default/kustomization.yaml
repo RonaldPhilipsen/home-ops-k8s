@@ -9,4 +9,3 @@ resources:
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
 
-
