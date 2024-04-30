@@ -112,7 +112,7 @@ spec:
       media:
         type: nfs
         server: 192.168.0.7
-        path: Downloads
+        path: /Media
         globalMounts:
           - path: /media/Downloads/qbittorrent
             subPath: Downloads/qbittorrent
