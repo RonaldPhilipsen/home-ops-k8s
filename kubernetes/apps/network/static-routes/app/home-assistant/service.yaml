@@ -11,6 +11,6 @@ spec:
   type: ExternalName
 
   ports:
-    - name: http
-      port: 80
-  externalName: "http://192.168.0.2"
+    - name: https
+      port: 443
+  externalName: "ha.local"
