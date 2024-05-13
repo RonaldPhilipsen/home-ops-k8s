@@ -1,0 +1,148 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app blocky
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      blocky:
+        replicas: 1
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/0xerr0r/blocky
+              tag: v0.23@sha256:450d193393c0dceb108d1cd80a5580ab9d851127c924c1ae89361d32161ae528
+            env:
+              TZ: ${TIMEZONE}
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &port 53
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                add:
+                  - NET_BIND_SERVICE
+                drop:
+                  - ALL
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+
+
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    service:
+      app:
+        controller: *app
+        nameOverride: *app
+        ports:
+          http:
+            port: 4000
+      dns:
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.0.11"
+          external-dns.alpha.kubernetes.io/hostname: dns.${SECRET_DOMAIN}
+          externalTrafficPolicy: Cluster
+        ports:
+          dns-tcp:
+            port: *port
+            protocol: TCP
+          dns-udp:
+            port: *port
+            protocol: UDP
+          dns-dot:
+            enabled: true
+            port: 853
+            protocol: TCP
+            targetPort: 853
+          dns-https:
+            enabled: true
+            port: 443
+            protocol: TCP
+            targetPort: 443
+          ui:
+            enabled: true
+            port: 8002
+            protocol: TCP
+            targetPort: 8002
+
+    persistence:
+      config:
+        type: secret
+        name: blocky-secret
+        globalMounts:
+          - path: /app/config.yml
+            subPath: config.yml
+            readOnly: true
+
+      etc-hosts:
+        type: hostPath
+        hostPath: /etc/hosts
+        globalMounts:
+          - readOnly: true
+
+      lists:
+        type: configMap
+        name: blocky-configmap
+        globalMounts:
+          - readOnly: true
