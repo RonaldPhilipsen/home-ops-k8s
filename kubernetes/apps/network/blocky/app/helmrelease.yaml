@@ -11,7 +11,7 @@ spec:
       version: 3.2.1
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-charts
+        name: bjw-s
         namespace: flux-system
   install:
     remediation:
@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/0xerr0r/blocky
-              tag: v0.23@sha256:450d193393c0dceb108d1cd80a5580ab9d851127c924c1ae89361d32161ae528
+              tag: v0.24@sha256:9a82e0235c52ef3048586f8006add06e52132adaae70d02f980569dae16421a2
             env:
               TZ: ${TIMEZONE}
             probes:
@@ -134,15 +134,3 @@ spec:
           - path: /app/config.yml
             subPath: config.yml
             readOnly: true
-
-      etc-hosts:
-        type: hostPath
-        hostPath: /etc/hosts
-        globalMounts:
-          - readOnly: true
-
-      lists:
-        type: configMap
-        name: blocky-configmap
-        globalMounts:
-          - readOnly: true
