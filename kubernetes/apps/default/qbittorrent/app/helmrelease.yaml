@@ -108,7 +108,7 @@ spec:
           - path: /config
       media:
         type: nfs
-        server: 192.168.0.7
+        server: ${NFS_IP}
         path: /Media
         globalMounts:
           - path: /media/

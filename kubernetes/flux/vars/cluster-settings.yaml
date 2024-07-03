@@ -8,3 +8,6 @@ data:
   TIMEZONE: "Europe/Amsterdam"
   CLUSTER_CIDR: "10.69.0.0/16"
   NODE_CIDR: "192.168.0.0/16"
+  ROUTER_IP: "192.168.0.1"
+  NFS_IP: "192.168.0.7"
+  BLOCKY_IP: "192.168.0.11"

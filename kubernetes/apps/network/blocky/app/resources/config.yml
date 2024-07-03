@@ -1,25 +1,30 @@
 ---
-connectIPVersion: v4
+ports:
+  dns: 0.0.0.0:53
+  http: 0.0.0.0:4000
+
+bootstrapDns:
+  - tcp-tls:1.1.1.1:853
+  - tcp-tls:1.0.0.1:853
+
 upstreams:
   groups:
     default:
-      - tcp-tls:one.one.one.one
-      - tcp-tls:dns.quad9.net
-      - https://cloudflare-dns.com/dns-query
-      - https://dns.quad9.net/dns-query
-  timeout: 2s
+      - tcp-tls:1.1.1.1:853
+      - tcp-tls:1.0.0.1:853
+    kenna*:
+      - tcp-tls:family.cloudflare-dns.com:853
 
-bootstrapDns:
-  upstream: tcp-tls:one.one.one.one
-  ips:
-    - 1.1.1.1
-    - 1.0.0.1
+clientLookup:
+  upstream: ${ROUTER_IP}
 
-filtering:
-  queryTypes:
-    - AAAA
-    - HTTPS
-# https://github.com/0xERR0R/blocky/issues/1273
+customDNS:
+  customTTL: 1h
+  filterUnmappedTypes: true
+  mapping:
+    local.${SECRET_DOMAIN}: ${TRAEFIK_IP}
+    k3s.${SECRET_DOMAIN}: ${K3S_LB_IP}
+    nfs.${SECRET_DOMAIN}: ${OMV_IP}
 
 blocking:
   blackLists:
@@ -72,22 +77,3 @@ blocking:
     default:
       - ads
       - trackers
-
-clientLookup:
-  upstream: 192.168.0.1
-caching:
-  prefetching: true
-  prefetchExpires: 2h
-  minTime: 5m
-  cacheTimeNegative: -1m
-prometheus:
-  enable: true
-  path: /metrics
-ports:
-  dns: 53
-  tls: 853
-  https: 443
-  http: 4000
-log:
-  level: info
-  format: text
