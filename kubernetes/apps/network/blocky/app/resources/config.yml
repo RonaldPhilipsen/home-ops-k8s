@@ -22,9 +22,9 @@ customDNS:
   customTTL: 1h
   filterUnmappedTypes: true
   mapping:
-    local.${SECRET_DOMAIN}: ${TRAEFIK_IP}
-    k3s.${SECRET_DOMAIN}: ${K3S_LB_IP}
-    nfs.${SECRET_DOMAIN}: ${OMV_IP}
+    local.${SECRET_DOMAIN}: ${INTERNAL_IP}
+    k3s.${SECRET_DOMAIN}: ${NFS_IP}
+    nfs.${SECRET_DOMAIN}: ${NFS_IP}
 
 blocking:
   blackLists:
