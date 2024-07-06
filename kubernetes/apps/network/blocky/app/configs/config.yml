@@ -17,11 +17,11 @@ upstreams:
       - tcp-tls:1.0.0.2:853 # cloudflware anti-malware
 
 clientLookup:
-  upstream: tcp+udp:${ROUTER_IP}
+  upstream: tcp+udp:192.168.0.1
 
 conditional:
   mapping:
-    ${SECRET_DOMAIN}: ${K8S_GATEWAY_IP}
+    ${SECRET_DOMAIN} : 192.168.0.9
     .: ${ROUTER_IP}
 
 blocking:
