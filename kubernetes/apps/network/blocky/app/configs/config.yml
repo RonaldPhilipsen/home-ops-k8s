@@ -10,21 +10,23 @@ bootstrapDns:
 upstreams:
   groups:
     default:
-      - tcp-tls:1.1.1.1:853
-      - tcp-tls:1.0.0.1:853
-    kenna*:
-      - tcp-tls:family.cloudflare-dns.com:853
+      - tcp-tls:1.1.1.1:853 # cloudflare
+      - tcp-tls:1.0.0.1:853 # cloudflare
+      - tcp-tls:1.1.1.2:853 # cloudflware anti-malware
+      - tcp-tls:1.0.0.2:853 # cloudflware anti-malware
 
 clientLookup:
   upstream: 192.168.0.1
+  singleNameOrder:
+    - 1
 
 customDNS:
   customTTL: 1h
   filterUnmappedTypes: true
   mapping:
-    local.${SECRET_DOMAIN}: ${INTERNAL_IP}
-    k3s.${SECRET_DOMAIN}: ${NFS_IP}
-    nfs.${SECRET_DOMAIN}: ${NFS_IP}
+    ${SECRET_DOMAIN}: 192.168.0.8
+    k3s.${SECRET_DOMAIN}: 192.168.0.7
+    nfs.${SECRET_DOMAIN}: 192.168.0.7
 
 blocking:
   blackLists:
