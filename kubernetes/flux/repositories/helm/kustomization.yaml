@@ -4,11 +4,12 @@ kind: Kustomization
 resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
+  - ./emqx.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
   - ./ingress-nginx.yaml
-  - ./k8s-gateway.yaml
   - ./jetstack.yaml
+  - ./k8s-gateway.yaml
   - ./metrics-server.yaml
   - ./openebs.yaml
   - ./stakater.yaml
