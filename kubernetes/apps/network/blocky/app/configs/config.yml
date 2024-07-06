@@ -22,7 +22,7 @@ clientLookup:
 conditional:
   mapping:
     ${SECRET_DOMAIN}: tcp+udp:${K8S_GATEWAY_IP}
-    .: 192.168.0.1 # router
+    .: ${ROUTER_IP}
 
 blocking:
   blackLists:
