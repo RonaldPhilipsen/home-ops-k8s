@@ -17,8 +17,7 @@ upstreams:
       - tcp-tls:1.0.0.2:853 # cloudflware anti-malware
 
 clientLookup:
-  upstream:
-  - 192.168.0.1
+  upstream: 192.168.0.1
 
 customDNS:
   customTTL: 1h
