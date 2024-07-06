@@ -16,7 +16,7 @@ upstreams:
       - tcp-tls:family.cloudflare-dns.com:853
 
 clientLookup:
-  upstream: ${ROUTER_IP}
+  upstream: 192.168.0.1
 
 customDNS:
   customTTL: 1h
