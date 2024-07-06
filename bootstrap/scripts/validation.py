@@ -54,10 +54,10 @@ def validate_network(cidr: str, family: int) -> str:
 def validate_node(node: dict, node_cidr: str, distribution: str) -> None:
     if not node.get("name"):
         raise ValueError(f"A node is missing a name")
-    if not re.match(r"^[a-z0-9-\.]+$", node.get('name')):
+    if not re.match(r"^[a-z0-9-\.]+$", node.get("name")):
         raise ValueError(f"Node {node.get('name')} has an invalid name")
     if distribution in ["k3s"]:
-        if not node.get("ssh_user") :
+        if not node.get("ssh_user"):
             raise ValueError(f"Node {node.get('name')} is missing ssh_user")
     if distribution in ["talos"]:
         if not node.get("talos_disk"):
@@ -65,7 +65,9 @@ def validate_node(node: dict, node_cidr: str, distribution: str) -> None:
         if not node.get("talos_nic"):
             raise ValueError(f"Node {node.get('name')} is missing talos_nic")
         if not re.match(r"(?:[0-9a-fA-F]:?){12}", node.get("talos_nic")):
-            raise ValueError(f"Node {node.get('name')} has an invalid talos_nic, is this a MAC address?")
+            raise ValueError(
+                f"Node {node.get('name')} has an invalid talos_nic, is this a MAC address?"
+            )
     ip = validate_ip(node.get("address"))
     if netaddr.IPAddress(ip, 4) not in netaddr.IPNetwork(node_cidr):
         raise ValueError(f"Node {node.get('name')} is not in the node CIDR {node_cidr}")
@@ -110,11 +112,13 @@ def validate_age(key: str, **_) -> None:
         raise ValueError(f"Invalid Age public key {key}")
 
 
-@required("bootstrap_node_network", "bootstrap_node_inventory", "bootstrap_distribution")
+@required(
+    "bootstrap_node_network", "bootstrap_node_inventory", "bootstrap_distribution"
+)
 def validate_nodes(node_cidr: str, nodes: dict[list], distribution: str, **_) -> None:
     node_cidr = validate_network(node_cidr, 4)
 
-    controllers = [node for node in nodes if node.get('controller') == True]
+    controllers = [node for node in nodes if node.get("controller") == True]
     if len(controllers) < 1:
         raise ValueError(f"Must have at least one controller node")
     if len(controllers) % 2 == 0:
@@ -122,7 +126,7 @@ def validate_nodes(node_cidr: str, nodes: dict[list], distribution: str, **_) ->
     for node in controllers:
         validate_node(node, node_cidr, distribution)
 
-    workers = [node for node in nodes if node.get('controller') == False]
+    workers = [node for node in nodes if node.get("controller") == False]
     for node in workers:
         validate_node(node, node_cidr, distribution)
 
