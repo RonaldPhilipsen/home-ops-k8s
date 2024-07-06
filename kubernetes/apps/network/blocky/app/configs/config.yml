@@ -10,23 +10,21 @@ bootstrapDns:
 upstreams:
   groups:
     default:
+      - 192.168.0.9 # k8s gateway
       - tcp-tls:1.1.1.1:853 # cloudflare
       - tcp-tls:1.0.0.1:853 # cloudflare
       - tcp-tls:1.1.1.2:853 # cloudflware anti-malware
       - tcp-tls:1.0.0.2:853 # cloudflware anti-malware
 
 clientLookup:
-  upstream: 192.168.0.1
-  singleNameOrder:
-    - 1
+  upstream:
+  - 192.168.0.1
 
 customDNS:
   customTTL: 1h
   filterUnmappedTypes: true
   mapping:
-    ${SECRET_DOMAIN}: 192.168.0.8
-    k3s.${SECRET_DOMAIN}: 192.168.0.7
-    nfs.${SECRET_DOMAIN}: 192.168.0.7
+    ${SECRET_DOMAIN}: 192.168.0.9
 
 blocking:
   blackLists:
