@@ -11,6 +11,7 @@ from bcrypt import hashpw, gensalt
 import makejinja
 import validation
 
+
 def encrypt(value: str) -> str:
     return hashpw(value.encode(), gensalt(rounds=10)).decode("ascii")
 
@@ -52,14 +53,11 @@ class Plugin(makejinja.plugin.Plugin):
 
         validation.validate(data)
 
-
     def filters(self) -> makejinja.plugin.Filters:
         return [encrypt, nthhost]
 
-
     def path_filters(self):
         return [self._mjfilter_func]
-
 
     def _mjfilter_func(self, path: Path) -> bool:
         return not any(
