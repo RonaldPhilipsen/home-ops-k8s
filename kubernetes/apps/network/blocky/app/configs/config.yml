@@ -21,7 +21,7 @@ clientLookup:
 
 conditional:
   mapping:
-    ${SECRET_DOMAIN}: tcp+udp:${K8S_GATEWAY_IP}
+    ${SECRET_DOMAIN}: ${K8S_GATEWAY_IP}
     .: ${ROUTER_IP}
 
 blocking:
