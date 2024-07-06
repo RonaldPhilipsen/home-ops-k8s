@@ -10,7 +10,6 @@ bootstrapDns:
 upstreams:
   groups:
     default:
-      - 192.168.0.9 # k8s gateway
       - tcp-tls:1.1.1.1:853 # cloudflare
       - tcp-tls:1.0.0.1:853 # cloudflare
       - tcp-tls:1.1.1.2:853 # cloudflware anti-malware
@@ -19,11 +18,11 @@ upstreams:
 clientLookup:
   upstream: 192.168.0.1
 
-customDNS:
-  customTTL: 1h
-  filterUnmappedTypes: true
-  mapping:
-    ${SECRET_DOMAIN}: 192.168.0.9
+conditional:
+  fallbackUpstream: true
+  rewrite:
+    rphilipsen.nl: 192.168.0.9 # k8s gateway
+    .: 192.168.0.1 # router
 
 blocking:
   blackLists:
