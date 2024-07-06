@@ -7,4 +7,9 @@ resources:
 configMapGenerator:
   - name: blocky-configmap
     files:
-      - ./resources/config.yml
+      - ./configs/config.yml
+
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
