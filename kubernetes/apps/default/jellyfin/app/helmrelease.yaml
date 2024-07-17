@@ -114,7 +114,7 @@ spec:
       config:
         type: nfs
         server: ${NFS_IP}
-        path: /config
+        path: /config/jellyfin
         globalMounts:
           - path: /config
 
