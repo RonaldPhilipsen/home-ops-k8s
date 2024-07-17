@@ -112,15 +112,15 @@ spec:
 
     persistence:
       config:
-        type: hostPath
-        hostPath: /mnt/storage/config/jellyfin
-        hostPathType: Directory
+        type: nfs
+        server: ${NFS_IP}
+        path: /config
         globalMounts:
           - path: /config
 
       media:
         type: nfs
-        server: 192.168.0.7
+        server: ${NFS_IP}
         path: /Media
         globalMounts:
           - path: /media/
