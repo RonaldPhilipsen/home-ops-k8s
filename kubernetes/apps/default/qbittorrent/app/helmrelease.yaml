@@ -101,9 +101,9 @@ spec:
                   port: http
     persistence:
       config:
-        type: hostPath
-        hostPath: /mnt/storage/config/qbittorrent
-        hostPathType: Directory
+        type: nfs
+        server: ${NFS_IP}
+        path: /config/qbittorrent
         globalMounts:
           - path: /config
       media:
