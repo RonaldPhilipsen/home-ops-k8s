@@ -89,7 +89,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         className: external
         hosts:
-          - host: ha.${SECRET_DOMAIN}
+          - host: hass.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -100,7 +100,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         className: internal
         hosts:
-          - host: ha-code.${SECRET_DOMAIN}
+          - host: hass-code.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
