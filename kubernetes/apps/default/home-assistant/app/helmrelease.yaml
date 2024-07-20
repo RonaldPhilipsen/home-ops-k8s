@@ -78,8 +78,20 @@ spec:
         ports:
           http:
             port: 8123
+          coiot:
+            port: &coiot 5683
           code-server:
             port: 12321
+      lb: 
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${HA_IP}
+        ports:
+          coiot-udp:
+            port: *coiot
+            protocol: UDP
+
     ingress:
       app:
         annotations:
@@ -92,6 +104,19 @@ spec:
                 service:
                   identifier: app
                   port: http
+
+      app-internal:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        className: internal
+        hosts:
+          - host: hass.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
       code-server:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
