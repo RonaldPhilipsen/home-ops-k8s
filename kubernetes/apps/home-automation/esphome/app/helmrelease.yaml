@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      app:
+      esphome:
         containers:
           app:
             image:
@@ -62,12 +62,12 @@ spec:
               }]
     service:
       app:
-        controller: app
+        controller: esphome
         ports:
           http:
             port: &esphome 6052
       lb: 
-        controller: app
+        controller: esphome
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetesio/hostname: &host esphome.${SECRET_DOMAIN}
