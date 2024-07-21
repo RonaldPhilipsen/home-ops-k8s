@@ -51,13 +51,33 @@ spec:
                 memory: 64M
               limits:
                 memory: 1024M
-
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"home-network",
+                "namespace": "network",
+                "ips": ["${ESPHOME_IP}/16"],
+                "mac": "36:3b:ef:15:c3:00"
+              }]
     service:
       app:
         controller: esphome
         ports:
           http:
-            port: 6052
+            port: &esphome 6052
+      lb: 
+        controller: esphome
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetesio/hostname: &host esphome.${SECRET_DOMAIN}
+          io.cilium/lb-ipam-ips: ${ESPHOME_IP}
+        ports:
+          ws:
+            protocol: TCP
+            port: *esphome
+            primary: true
+        externalTrafficPolicy: Cluster
 
     ingress:
       app:
@@ -65,7 +85,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host "esphome.${SECRET_DOMAIN}"
+          - host: *host
             paths:
               - path: /
                 service:
