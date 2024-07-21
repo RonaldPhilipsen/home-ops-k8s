@@ -29,11 +29,12 @@ spec:
     keepHistory: false
   values:
     controllers:
-      app:
+      matter-server:
         type: statefulset
+        pod:
+          hostNetwork: true
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
@@ -54,16 +55,6 @@ spec:
               limits:
                 memory: "500M"
 
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"home-network",
-                "namespace": "network",
-                "ips": ["${MATTER_IP}/16"],
-                "mac": "36:3b:ef:15:c3:00"
-              }]
-
     defaultPodOptions:
       securityContext:
         runAsUser: 0 # Must be run as root user
@@ -76,7 +67,7 @@ spec:
 
     service:
       app:
-        controller: app
+        controller: *app
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: *host

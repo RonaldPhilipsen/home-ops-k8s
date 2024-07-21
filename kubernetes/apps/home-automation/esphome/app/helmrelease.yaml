@@ -28,6 +28,9 @@ spec:
   values:
     controllers:
       esphome:
+        pod:
+          hostNetwork: true
+
         containers:
           app:
             image:
@@ -51,15 +54,7 @@ spec:
                 memory: 64M
               limits:
                 memory: 1024M
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"home-network",
-                "namespace": "network",
-                "ips": ["${ESPHOME_IP}/16"],
-                "mac": "36:3b:ef:15:c3:00"
-              }]
+
     service:
       app:
         controller: esphome
