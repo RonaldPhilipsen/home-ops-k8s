@@ -24,11 +24,11 @@ spec:
       retries: 3
   values:
     controllers:
-      home-assistant:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/home-assistant
               tag: 2024.7.3@sha256:49edf11a71f1c6b8787dc5b190252d7a2e72e40d93091011be26d2162b1cdff6
@@ -73,7 +73,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      *app :
         controller: home-assistant
         ports:
           http:
@@ -93,7 +93,7 @@ spec:
             protocol: UDP
 
     ingress:
-      app:
+      *app :
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         className: external
@@ -102,7 +102,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: http
 
       app-internal:
@@ -114,7 +114,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: http
 
       code-server:
@@ -126,7 +126,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: code-server
     persistence:
       config:
