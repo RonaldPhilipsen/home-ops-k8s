@@ -78,7 +78,11 @@ spec:
             port: *wsPort
             primary: true
         externalTrafficPolicy: Cluster
-
+        spec:
+          ipFamilyPolicy: PreferDualStack
+          ipFamilies:
+          - IPv6
+          - IPv4
     ingress:
       internal:
         annotations:
