@@ -5,7 +5,7 @@
 #
 
 # (Required) Timezone is your IANA formatted timezone (e.g. America/New_York)
-bootstrap_timezone: ""
+bootstrap_timezone: "Europe/Amsterdam"
 
 # (Required) Distribution can either be k3s or talos
 bootstrap_distribution: k3s
@@ -219,4 +219,4 @@ bootstrap_cloudflare:
 #   # Keep in mind that Cilium does not currently support IPv6 L2 announcements.
 #   # Make sure you set cluster.pod_cidr and cluster.service_cidr
 #   #   to a valid dual stack CIDRs, e.g. "10.42.0.0/16,fd00:10:244::/64"
-#   dual_stack_ipv4_first: false
+dual_stack_ipv4_first: false
