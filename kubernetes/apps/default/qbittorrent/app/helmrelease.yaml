@@ -42,7 +42,7 @@ spec:
               repository: ghcr.io/onedr0p/qbittorrent-beta
               tag: 4.6.5@sha256:251916c90b09018e747b775f4924da711d8b4545b5b959030eb428571b38be2f
             env:
-              TZ: Europe/Amsterdam
+              TZ: ${TIMEZONE}
               QBITTORRENT__PORT: &port 80
               QBITTORRENT__BT_PORT: &bittorrentPort 50413
               QBT_Application__MemoryWorkingSetLimit: 10000
