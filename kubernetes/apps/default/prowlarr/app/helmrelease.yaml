@@ -122,8 +122,4 @@ spec:
 
     persistence:
       config:
-        type: nfs
-        server: ${NFS_IP}
-        path: /config/prowlarr
-        globalMounts:
-          - path: /config
+        existingClaim: prowlarr
