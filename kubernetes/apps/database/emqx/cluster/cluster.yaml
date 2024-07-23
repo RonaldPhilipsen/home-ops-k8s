@@ -25,14 +25,6 @@ spec:
         ]
         no_match: "deny"
       }
-  bootstrapAPIKeys:
-    - secretRef:
-        key:
-          secretName: emqx-secret
-          secretKey: X_EMQX_APIKEY_KEY
-        secret:
-          secretName: emqx-secret
-          secretKey: X_EMQX_APIKEY_SECRET
   coreTemplate:
     metadata:
       annotations:
@@ -61,6 +53,9 @@ spec:
   listenersServiceTemplate:
     metadata:
       annotations:
+        external-dns.alpha.kubernetes.io/hostname: mqtt-emqx.${SECRET_DOMAIN}
         io.cilium/lb-ipam-ips: ${MQTT_IP}
     spec:
       type: LoadBalancer
+      externalIPs: ["${MQTT_IP}"]
+      externalTrafficPolicy: Local
