@@ -16,7 +16,8 @@ data:
 
   # Cluster nodes
   CM3588_IP: "192.168.0.7"
-  PI_IP: "192.168.0.13"
+  PI5_IP: "192.168.0.13"
+  PI4_IP: "192.168.0.20"
 
   # External items  
   ROUTER_IP: "192.168.0.1"
