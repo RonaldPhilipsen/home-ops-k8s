@@ -75,12 +75,12 @@ spec:
 
     persistence:
       config:
-        type: nfs
-        server: ${NFS_IP}
-        path: /config/nginx/config/
+        type: configMap
+        name: nginx-configmap # overriden by kustomizeconfig
         globalMounts:
-          - path: /etc/nginx/
-            readOnly: false
+          - path: /config/nginx/nginx.conf
+            subPath: config.yml
+            readOnly: true
 
       config-map:
         type: nfs
@@ -97,7 +97,6 @@ spec:
         globalMounts:
           - path: /var/www/
             readOnly: true
-        
       logs:
         enabled: true
         type: emptyDir

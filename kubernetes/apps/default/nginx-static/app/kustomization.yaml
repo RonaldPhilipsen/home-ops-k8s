@@ -5,3 +5,8 @@ kind: Kustomization
 namespace: default
 resources:
   - helmrelease.yaml
+
+configMapGenerator:
+  - name: nginx-configmap
+    files:
+      - ./configs/config.yml
