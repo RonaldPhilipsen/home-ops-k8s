@@ -77,10 +77,10 @@ spec:
       config:
         type: nfs
         server: ${NFS_IP}
-        path: /config/nginx/nginx.conf
+        path: /config/nginx/config/
         globalMounts:
-          - path: /etc/nginx/nginx.conf
-            readOnly: true
+          - path: /etc/nginx/
+            readOnly: false
 
       config-map:
         type: nfs
