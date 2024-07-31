@@ -42,7 +42,7 @@ spec:
         supplementalGroups: [160, 140, 241, 0, 10, 121]
     
     controllers:
-      app:
+      nginx-static:
         strategy: Recreate
         containers:
           main:
@@ -52,6 +52,13 @@ spec:
               pullPolicy: Always
             ports:
               - containerPort: 80
+
+    service:
+      app:
+        controller: nginx-static
+        ports:
+          http:
+            port: 80
 
     ingress:
       app:
