@@ -42,7 +42,7 @@ spec:
         supplementalGroups: [160, 140, 241, 0, 10, 121]
     
     controllers:
-      nginx-static:
+      app:
         strategy: Recreate
         containers:
           main:
