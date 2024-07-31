@@ -111,4 +111,4 @@ spec:
         medium: Memory
         globalMounts:
           - subPath: "tmp"
-            path: "/var/cache/"
+            path: "/var/cache/nginx"
