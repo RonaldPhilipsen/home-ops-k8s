@@ -103,4 +103,12 @@ spec:
         medium: Memory
         globalMounts:
           - subPath: "tmp"
-            path: "/var/log/nginx"
+            path: "/var/log/nginx/"
+      
+      cache:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - subPath: "tmp"
+            path: "/var/cache/"
