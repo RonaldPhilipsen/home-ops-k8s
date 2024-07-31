@@ -10,3 +10,6 @@ configMapGenerator:
   - name: nginx-configmap
     files:
       - ./config/config.yml
+
+generatorOptions:
+  disableNameSuffixHash: true
