@@ -9,4 +9,4 @@ resources:
 configMapGenerator:
   - name: nginx-configmap
     files:
-      - ./configs/config.yml
+      - ./config/config.yml
