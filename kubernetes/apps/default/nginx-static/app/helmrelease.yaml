@@ -47,7 +47,7 @@ spec:
         containers:
           main:
             image:
-              repository: nginxinc/nginx-unprivileged
+              repository: ghcr.io/nginxinc/nginx-unprivileged
               tag: "1.27.0"
               pullPolicy: Always
             ports:
