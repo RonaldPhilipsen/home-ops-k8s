@@ -66,6 +66,12 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         hosts:
+          - host: "www.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
           - host: "${SECRET_DOMAIN}"
             paths:
               - path: /
