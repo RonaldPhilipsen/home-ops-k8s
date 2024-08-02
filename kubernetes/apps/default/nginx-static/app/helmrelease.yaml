@@ -51,14 +51,14 @@ spec:
               tag: "1.27.0"
               pullPolicy: Always
             ports:
-              - containerPort: 80
+              - containerPort: 8080
 
     service:
       app:
         controller: nginx-static
         ports:
           http:
-            port: 80
+            port: 8080
 
     ingress:
       app:
@@ -66,7 +66,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         hosts:
-          - host: "www.${SECRET_DOMAIN}"
+          - host: "${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
