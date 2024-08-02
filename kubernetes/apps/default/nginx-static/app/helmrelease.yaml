@@ -47,7 +47,7 @@ spec:
         containers:
           main:
             image:
-              repository: nginx-unprivileged
+              repository: nginxinc/nginx-unprivileged
               tag: "1.27.0"
               pullPolicy: Always
             ports:
