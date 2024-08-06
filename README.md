@@ -92,7 +92,6 @@ The `external-dns` instance mentioned above another instance is deployed in my c
 
 ---
 
-
 ## 🔧 Hardware
 
 ### Main Kubernetes Cluster
@@ -105,8 +104,33 @@ The `external-dns` instance mentioned above another instance is deployed in my c
 
 I fully intend to replace the raspberry pis with something with a little more oompfh at some point in the future, perhaps more cm3588's, perhaps something else.
 
----
+#### note: custom kernel
 
+For the raspberry pis to get ciliu,-envoy working, we compile a custom kernel that has CONFIG_PG_TABLE_LEVELS set to 4
+
+```bash
+apt install -y git bc bison flex libssl-dev make libncurses5-dev
+cd /opt
+git clone --depth=1 https://github.com/raspberrypi/linux
+cd linux
+
+# create kernel config
+#RASPI 4: `make bcm2711_defconfig`
+#RASPI 5: `make bcm2712_defconfig`
+
+# # DO OTHER TUNINGS HERE via `make menuconfig`
+
+cd /opt/linux
+cat > .config-fragment << EOF
+CONFIG_ARM64_VA_BITS_48=y
+EOF
+./scripts/kconfig/merge_config.sh .config .config-fragment
+make -j4 Image.gz modules dtbs
+make modules_install
+reboot
+```
+
+---
 
 Big shout out to original [flux-cluster-template](https://github.com/onedr0p/flux-cluster-template), and the [Home Operations](https://discord.gg/home-operations) Discord community.
 
