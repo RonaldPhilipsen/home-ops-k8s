@@ -4,6 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: csi-driver-nfs
+  namespace: storage
 spec:
   interval: 30m
   chart:
@@ -14,8 +15,10 @@ spec:
         kind: HelmRepository
         name: csi-driver-nfs
         namespace: flux-system
+
+  maxHistory: 3
+
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
