@@ -29,6 +29,7 @@ spec:
   values:
     controller:
       runOnControlPlane: true
+      replicas: 2
     externalSnapshotter:
       enabled: false
     node:
