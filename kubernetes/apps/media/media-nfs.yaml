@@ -10,9 +10,6 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  nfs:
-    server: "${NFS_IP}"
-    path: /media
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
