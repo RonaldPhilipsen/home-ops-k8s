@@ -106,7 +106,7 @@ I fully intend to replace the raspberry pis with something with a little more oo
 
 #### note: custom kernel
 
-For the raspberry pis to get ciliu,-envoy working, we compile a custom kernel that has CONFIG_PG_TABLE_LEVELS set to 4
+For the raspberry pis to get cilium-envoy working, we compile a custom kernel that has CONFIG_PG_TABLE_LEVELS set to 4
 
 ```bash
 apt install -y git bc bison flex libssl-dev make libncurses5-dev
@@ -120,6 +120,32 @@ cd linux
 
 # # DO OTHER TUNINGS HERE via `make menuconfig`
 
+cd /opt/linux
+cat > .config-fragment << EOF
+CONFIG_ARM64_VA_BITS_48=y
+EOF
+./scripts/kconfig/merge_config.sh .config .config-fragment
+make -j4 Image.gz modules dtbs
+make modules_install
+
+cp arch/arm64/boot/dts/broadcom/*.dtb /boot/
+cp arch/arm64/boot/dts/overlays/*.dtb* /boot/overlays/
+cp arch/arm64/boot/dts/overlays/README /boot/overlays/
+# RASPI 4: cp arch/arm64/boot/Image.gz /boot/kernel8.img
+# RASPI 5: cp arch/arm64/boot/Image.gz /boot/firmware/kernel8.img
+echo "kernel=kernel8.img" | tee -a /boot/firmware/config.txt
+reboot
+```
+
+for the cm3588 I had to do a similar thing:
+```bash
+apt install -y git bc bison flex libssl-dev make libncurses5-dev
+cd /opt
+git clone --depth=1 https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git
+cd linux
+
+export ARCH=arm64
+make defconfig
 cd /opt/linux
 cat > .config-fragment << EOF
 CONFIG_ARM64_VA_BITS_48=y
