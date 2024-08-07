@@ -119,7 +119,11 @@ spec:
           - path: /config
 
       media:
-        existingClaim: media-nfs
+        type: nfs
+        server: ${NFS_IP}
+        path: /Media
+        globalMounts:
+          - path: /media/
 
       tmp:
         enabled: true

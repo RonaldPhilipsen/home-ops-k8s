@@ -108,4 +108,8 @@ spec:
         globalMounts:
           - path: /config
       media:
-        existingClaim: media-nfs
+        type: nfs
+        server: ${NFS_IP}
+        path: /Media
+        globalMounts:
+          - path: /media/

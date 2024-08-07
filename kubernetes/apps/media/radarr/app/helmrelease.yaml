@@ -5,6 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app radarr
   namespace: media
+
 spec:
   interval: 30m
   chart:
@@ -109,4 +110,8 @@ spec:
           - path: /config
 
       media:
-        existingClaim: media-nfs
+        type: nfs
+        server: ${NFS_IP}
+        path: /Media
+        globalMounts:
+          - path: /media/
