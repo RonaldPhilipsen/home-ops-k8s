@@ -138,6 +138,7 @@ reboot
 ```
 
 for the cm3588 I had to do a similar thing:
+
 ```bash
 apt install -y git bc bison flex libssl-dev make libncurses5-dev
 cd /opt
