@@ -19,7 +19,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: ${{ secrets.NFS_SERVER }}
+    server: ${NFS_IP}
     path: /Media
   mountOptions:
     - nfsvers=4.2
