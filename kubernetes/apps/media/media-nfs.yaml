@@ -16,6 +16,7 @@ spec:
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
+    - noatime
     - hard
 ---
 apiVersion: v1
