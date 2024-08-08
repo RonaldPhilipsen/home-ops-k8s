@@ -1,0 +1,41 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: data-nfs
+provisioner: nfs
+parameters:
+  archiveOnDelete: "false"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-nfs
+spec:
+  storageClassName: data-nfs
+  capacity:
+    storage: 15Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: ${NFS_IP}
+    path: /data
+  mountOptions:
+    - nfsvers=4.2
+    - nconnect=8
+    - noatime
+    - hard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-nfs
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: data-nfs
+  resources:
+    requests:
+      storage: 15Ti
