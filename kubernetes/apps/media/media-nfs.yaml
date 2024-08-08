@@ -2,16 +2,10 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-media
-provisioner: nfs.csi.k8s.io
+  name: media-nfs
+provisioner: nfs
 parameters:
-  server: ${NFS_IP}
-  share: /Media
-reclaimPolicy: Retain
-volumeBindingMode: Immediate
-# Note: The first two options are strictly for NFSv4.2
-mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime"]
-
+  archiveOnDelete: "false"
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -25,8 +19,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-  server: ${{ secrets.NFS_SERVER }}
-  path: /Media
+    server: ${{ secrets.NFS_SERVER }}
+    path: /Media
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
