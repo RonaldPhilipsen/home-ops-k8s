@@ -5,10 +5,10 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  # - ./media-nfs.yaml
+  - ./media-nfs.yaml
   # Flux-Kustomizations
   # - ./jellyfin/ks.yaml
-  # - ./sonarr/ks.yaml
+  - ./sonarr/ks.yaml
   # - ./radarr/ks.yaml
   # - ./prowlarr/ks.yaml
   # - ./qbittorrent/ks.yaml
