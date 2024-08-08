@@ -78,12 +78,6 @@ spec:
                 service:
                   identifier: app
                   port: http
-          - host: "phea.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
 
     persistence:
       config:
