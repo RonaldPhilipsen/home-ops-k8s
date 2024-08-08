@@ -71,7 +71,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: *host
-          io.cilium/lb-ipam-ips: ${MATTER_IP}
+          io.cilium/lb-ipam-ips: ${MATTER_IP}, ${MATTER_IPV6}
         ports:
           ws:
             protocol: TCP

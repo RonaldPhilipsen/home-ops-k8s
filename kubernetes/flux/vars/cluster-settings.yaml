@@ -27,5 +27,7 @@ data:
   POSTGRES_IP: "192.168.0.14"
   HA_IP: "192.168.0.15"
   MATTER_IP: "192.168.0.16"
+  MATTER_IPV6: "fe80::bacd:e59d:900d:c0de"
+
   ESPHOME_IP: "192.168.0.17"
   MQTT_IP: "192.168.0.18"
