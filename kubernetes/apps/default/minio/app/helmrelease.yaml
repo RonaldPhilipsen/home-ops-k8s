@@ -31,7 +31,7 @@ spec:
       minio:
         pod:
           securityContext:
-            fsGroup: 538
+            fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
