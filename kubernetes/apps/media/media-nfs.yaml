@@ -10,6 +10,9 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
+  nfs:
+  server: ${{ secrets.NFS_SERVER }}
+  path: /Media
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
