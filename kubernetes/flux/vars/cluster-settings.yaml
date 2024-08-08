@@ -7,7 +7,9 @@ metadata:
 data:
   TIMEZONE: "Europe/Amsterdam"
   CLUSTER_CIDR: "10.69.0.0/16"
+  CLUSTER_CIDR_IPV6: fe80:1337:c0de::/64
   NODE_CIDR: "192.168.0.0/16"
+  NODE_CIDR_IPV6: "fe80:900d:1337:c0de::/64"
   NFS_IP: "192.168.0.7"
   
   INTERNAL_IP: "192.168.0.8"
