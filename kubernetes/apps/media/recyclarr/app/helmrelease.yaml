@@ -62,7 +62,11 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     persistence:
       config:
-        existingClaim: recyclarr
+        type: nfs
+        server: ${NFS_IP}
+        path: /config/recyclarr
+        globalMounts:
+          - path: /config
       config-file:
         type: configMap
         name: recyclarr-configmap
