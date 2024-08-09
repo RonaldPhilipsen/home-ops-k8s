@@ -64,6 +64,8 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups:
           - 34
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
 
     service:
       app:
