@@ -44,7 +44,7 @@ spec:
               MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_DOMAIN}"
               MINIO_SERVER_URL: "https://s3.${SECRET_DOMAIN}"
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
-              MINIO_PROMETHEUS_JOB_ID: minio
+              #MINIO_PROMETHEUS_JOB_ID: minio
               #MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
               #MINIO_PROMETHEUS_AUTH_TYPE: public
 
@@ -98,7 +98,7 @@ spec:
       app:
         className: internal
         annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+          # nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         hosts:
           - host: &console-host minio.${SECRET_DOMAIN}
@@ -114,7 +114,7 @@ spec:
         className: internal
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+          # nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
           nginx.ingress.kubernetes.io/proxy-body-size: 1024m
           nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
