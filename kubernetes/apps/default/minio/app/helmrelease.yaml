@@ -29,10 +29,6 @@ spec:
   values:
     controllers:
       minio:
-        pod:
-          securityContext:
-            fsGroup: 568
-            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
             image:
@@ -74,6 +70,15 @@ spec:
                 cpu: 100m
               limits:
                 memory: 2Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
