@@ -129,4 +129,8 @@ spec:
 
     persistence:
       config:
-        existingClaim: data-nfs
+        type: nfs
+        server: ${NFS_SERVER}
+        path: /data
+        globalMounts:
+          - path: /data
