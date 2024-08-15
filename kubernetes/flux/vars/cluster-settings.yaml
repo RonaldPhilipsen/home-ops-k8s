@@ -27,6 +27,8 @@ data:
   # Services
   BLOCKY_IP: "192.168.0.11"
   POSTGRES_IP: "192.168.0.14"
+  POSTGRES2_IP: "192.168.0.19"
+
   HA_IP: "192.168.0.15"
   MATTER_IP: "192.168.0.16"
   MATTER_IPV6: "fe80::bacd:e59d:900d:c0de"
