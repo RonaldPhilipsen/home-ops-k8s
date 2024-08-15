@@ -63,7 +63,7 @@ spec:
                   timeoutSeconds: 10
                   failureThreshold: 6
               readiness: *probes
-            
+
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -74,6 +74,7 @@ spec:
                 cpu: 100m
               limits:
                 memory: 2Gi
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -124,8 +125,8 @@ spec:
                   port: api
         tls:
           - hosts:
-            - *console-host
-            - *api-host
+              - *console-host
+              - *api-host
 
     persistence:
       config:
