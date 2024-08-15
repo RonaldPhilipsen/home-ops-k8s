@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: ./kubernetes/main/apps/database/cruncy-pg/operator
+  path: ./kubernetes/main/apps/database/crunchy-pg/operator
   prune: true
   sourceRef:
     kind: GitRepository
