@@ -1,8 +1,8 @@
 ---
 k3s_control_node: true
 k3s_server:
-  cluster-cidr: "10.69.0.0/16"
-  service-cidr: "10.96.0.0/16"
+  cluster-cidr: "10.69.0.0/16,fd20:fccd:8001:0::/64"
+  service-cidr: "10.96.0.0/16,fd25:fccd:8001:0::/64"
   disable: ["flannel", "local-storage", "metrics-server", "servicelb", "traefik"]
   disable-cloud-controller: true
   disable-kube-proxy: true
@@ -17,7 +17,7 @@ k3s_server:
     - "bind-address=0.0.0.0"
   kube-scheduler-arg:
     - "bind-address=0.0.0.0"
-  node-ip: "{{ ansible_host }}"
+  node-ip: "{{ ansible_host }},{{ ansible_default_ipv6.address }}"
   secrets-encryption: true
   tls-san:
     - "192.168.0.2"

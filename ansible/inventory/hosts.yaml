@@ -11,6 +11,3 @@ kubernetes:
         "rpi5":
           ansible_user: "k3s"
           ansible_host: "192.168.0.13"
-        "rpi4":
-          ansible_user: "k3s"
-          ansible_host: "192.168.0.20"

@@ -7,31 +7,21 @@ metadata:
 data:
   TIMEZONE: "Europe/Amsterdam"
   CLUSTER_CIDR: "10.69.0.0/16"
-  CLUSTER_CIDR_IPV6: fe80:1337:c0de::/64
   NODE_CIDR: "192.168.0.0/16"
-  NODE_CIDR_IPV6: "fe80:900d:1337:c0de::/64"
-  NFS_IP: "192.168.0.7"
-  
-  INTERNAL_IP: "192.168.0.8"
-  K8S_GW_IP: "192.168.0.9"
-  EXTERNAL_IP: "192.168.0.10"
-
-  # Cluster nodes
-  CM3588_IP: "192.168.0.7"
-  PI5_IP: "192.168.0.13"
-  PI4_IP: "192.168.0.20"
+  CLUSTER_CIDR_V6: "fd20:fccd:8001:0::/64"
+  BGP_ADVERTISED_CIDR: "10.10.0.0/16,fd30:fccd:8001:0::/64"
 
   # External items  
+  NFS_IP: "192.168.0.7"
   ROUTER_IP: "192.168.0.1"
 
   # Services
-  BLOCKY_IP: "192.168.0.11"
-  POSTGRES_IP: "192.168.0.14"
-  POSTGRES2_IP: "192.168.0.19"
+  BLOCKY_IP: "192.168.5.2"
+  POSTGRES_IP: "192.168.5.10"
 
-  HA_IP: "192.168.0.15"
-  MATTER_IP: "192.168.0.16"
-  MATTER_IPV6: "fe80::bacd:e59d:900d:c0de"
-
-  ESPHOME_IP: "192.168.0.17"
-  MQTT_IP: "192.168.0.18"
+  # IOT
+  HA_IP: "192.168.8.5"
+  ESPHOME_IP: "192.168.8.10"
+  MQTT_IP: "192.168.8.20"
+  MATTER_IP: "192.168.8.30"
+  MATTER_IPV6: "fd30:fccd:e59d:900d:c0de"

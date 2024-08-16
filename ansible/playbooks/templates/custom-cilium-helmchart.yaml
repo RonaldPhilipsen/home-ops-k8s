@@ -40,12 +40,15 @@ spec:
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: "10.69.0.0/16"
+    ipv6NativeRoutingCIDR: "fd20:fccd:8001:0::/64"
+    ipv6:
+      enabled: true
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 6444
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
-      enabled: true
+      enabled: false # https://github.com/cilium/cilium/issues/28985
     loadBalancer:
       algorithm: maglev
       mode: snat
