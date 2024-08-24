@@ -48,7 +48,7 @@ spec:
           main:
             image:
               repository: ghcr.io/nginxinc/nginx-unprivileged
-              tag: "1.27.0"
+              tag: "1.27.1"
               pullPolicy: Always
             ports:
               - containerPort: 8080
