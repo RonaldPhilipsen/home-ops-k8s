@@ -8,8 +8,8 @@ data:
   TIMEZONE: "Europe/Amsterdam"
   CLUSTER_CIDR: "10.69.0.0/16"
   NODE_CIDR: "192.168.0.0/16"
-  CLUSTER_CIDR_V6: "fd20:fccd:8001:0::/64"
-  BGP_ADVERTISED_CIDR: "10.10.0.0/16,fd30:fccd:8001:0::/64"
+  CLUSTER_CIDR_V6: "fd20:fccd:8001::/48"
+  BGP_ADVERTISED_CIDR: "10.10.0.0/16,fd30:fccd:8001::/48"
 
   # External items  
   NFS_IP: "192.168.0.7"

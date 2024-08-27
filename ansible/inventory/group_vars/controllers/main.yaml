@@ -1,8 +1,8 @@
 ---
 k3s_control_node: true
 k3s_server:
-  cluster-cidr: "10.69.0.0/16,fd20:fccd:8001:0::/64"
-  service-cidr: "10.96.0.0/16,fd25:fccd:8001:0::/64"
+  cluster-cidr: "10.69.0.0/16,fd20:fccd:8001::/48"
+  service-cidr: "10.96.0.0/16,fd25:fccd:8001::/48"
   disable: ["flannel", "local-storage", "metrics-server", "servicelb", "traefik"]
   disable-cloud-controller: true
   disable-kube-proxy: true
