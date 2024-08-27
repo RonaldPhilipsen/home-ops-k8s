@@ -30,7 +30,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: ./kubernetes/apps/database/cruncy-pg/cluster
+  path: ./kubernetes/apps/database/crunchy-pg/cluster
   prune: true
   sourceRef:
     kind: GitRepository
